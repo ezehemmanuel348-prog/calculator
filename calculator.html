@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <script src="https://cdn.tailwindcss.com"></script>
+     <script>tailwind.config = {
+        darkMode: "class"
+      }</script>
+</head>
+<body class="dark">
+     <div class="dark:bg-gray-900">
+        <div  class="flex relative">
+        <textarea  id="history" readonly class="w-full h-30  dark:bg-gray-900 dark:text-white font-bold text-xl"></textarea>
+
+        <svg id="toggle"class="cursor-pointer" width="20px" height="20px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs> <style>.cls-1{fill:#8c9eff;}.cls-2{fill:#5f7cf9;}</style> </defs> <title></title> <g id="dots"> <circle class="cls-1" cx="16" cy="16" r="3"></circle> <circle class="cls-1" cx="16" cy="8" r="3"></circle> <circle class="cls-1" cx="16" cy="24" r="3"></circle> <path class="cls-2" d="M16,13v6a3,3,0,0,0,0-6Z"></path> <path class="cls-2" d="M16,5v6a3,3,0,0,0,0-6Z"></path> <path class="cls-2" d="M16,21v6a3,3,0,0,0,0-6Z"></path> </g> </g></svg>
+        <button id="clearhistory" class="dark:text-white absolute right-9 hidden">clear history</button>
+        </div>
+    <input type="text" id="display" readonly class="w-full h-30 border border-solid border-black font-bold text-xl dark:bg-gray-900 dark:text-white">
+    <div id="simplemode" class="grid grid-cols-4 grid-rows-4 gap-2 p-2 text-white font-bold text-xl">
+        <button id="clearall" class="rounded-lg border bg-gray-400 p-2 text-orange-400 ">AC</button>
+        <button id="delete" class="rounded-lg border bg-gray-400 p-2 text-orange-400 ">DE</button>
+        <button id="divide" class="rounded-lg border bg-gray-400 p-2 text-orange-400 ">/</button>
+        <button id="percent" class="rounded-lg border bg-gray-400 p-2 text-orange-400 ">%</button>
+          <button id="seven" class="rounded-lg border bg-gray-400 p-2 ">7</button>
+        <button id="eight" class="rounded-lg border bg-gray-400 p-2">8</button>
+        <button id="nine" class="rounded-lg border bg-gray-400 p-2">9</button>
+        <button id="multiply" class="rounded-lg border bg-gray-400 p-2 text-orange-400 ">x</button>
+        <button id="four" class="rounded-lg border bg-gray-400 p-2">4</button>
+        <button id="five" class="rounded-lg border bg-gray-400 p-2">5</button>
+        <button id="six" class="rounded-lg border bg-gray-400 p-2">6</button>
+        <button id="subtract" class="rounded-lg border bg-gray-400 p-2 text-orange-400 ">-</button>
+        <button id="one" class="rounded-lg border bg-gray-400 p-2">1</button>
+        <button id="two" class="rounded-lg border bg-gray-400 p-2">2</button>
+        <button id="three" class="rounded-lg border bg-gray-400 p-2">3</button>
+        <button id="add" class="rounded-lg border bg-gray-400 p-2 text-orange-400">+</button>
+        
+        <button id="zero" class="rounded-lg border bg-gray-400 p-2 col-span-2">0</button>
+        <button id="decimal" class="rounded-lg border bg-gray-400 p-2">.</button>
+        <button id="equals" class="rounded-lg border border-orange-400 text-white bg-orange-400 p-2 font-bold text-xl">=</button>
+    </div>
+    </div>
+</body>
+<script>
+    const display = document.getElementById("display");
+    const history = document.getElementById("history");
+     const historyvalue = localStorage.getItem ("calchistory");
+    if (historyvalue) {
+        history.value = historyvalue;}
+    const clearhistory = document.getElementById("clearhistory")
+    clearhistory.addEventListener("click",() => {
+        localStorage.clear();
+         history.value = "";
+    });   
+    document.getElementById("toggle").addEventListener("click",() => {
+        if (clearhistory.classList.contains("hidden")) {clearhistory.classList.remove("hidden")}
+        else
+        {clearhistory.classList.add("hidden")}});   
+    document.getElementById("clearall").addEventListener("click",() => {display.value ="";
+       
+    });   
+    document.getElementById("delete").addEventListener("keydown",(event) => {if (event.key ==='Backspace') {display.value = display.value.slice(0,-1)}});
+    document.getElementById("delete").addEventListener("click",() => {display.value = display.value.slice(0,-1)});
+     document.getElementById("percent").addEventListener("click",() => {display.value= Number(display.value)/100 });
+    
+    document.getElementById("one").addEventListener("click",() => {display.value += 1});
+    document.getElementById("two").addEventListener("click",() => {display.value += 2});
+    document.getElementById("three").addEventListener("click",() => {display.value += 3});
+    document.getElementById("four").addEventListener("click",() => {display.value += 4});
+    document.getElementById("five").addEventListener("click",() => {display.value += 5});
+    document.getElementById("six").addEventListener("click",() => {display.value += 6});
+    document.getElementById("seven").addEventListener("click",() => {display.value += 7});
+    document.getElementById("eight").addEventListener("click",() => {display.value += 8});
+    document.getElementById("nine").addEventListener("click",() => {display.value += 9});
+    document.getElementById("zero").addEventListener("click",() => {
+     if (display.value === "") {
+        display.value = "0";
+    } else if (display.value === "0") {
+        return;
+    } else {
+        display.value += "0";
+    }
+});
+document.getElementById("decimal").addEventListener("click",() => {
+     if (display.value != "" && !display.value.includes(".")) {
+        display.value += ".";}
+    
+});
+ document.getElementById("divide").addEventListener("click",() => {if (display.value != "" && !display.value.endsWith("/")) {display.value += "/"}});
+  document.getElementById("multiply").addEventListener("click",() => {if(display.value !="" && !display.value.endsWith("x")) {display.value += "x"}});
+   document.getElementById("subtract").addEventListener("click",() => {if( !display.value.endsWith("-")) {display.value += "-"}});
+    document.getElementById("add").addEventListener("click",() => {if(display.value !="" && !display.value.endsWith("+")) {display.value += "+"}});
+     document.getElementById("equals").addEventListener("click",() => {
+        if (display.value === "") {return;}
+         const expression = display.value.replaceAll("x","*"); 
+         const result = eval(expression); 
+         const historyEntry = `${display.value}=${result}\n`;
+         history.value += historyEntry;
+         localStorage.setItem("calchistory",history.value);
+         display.value=result;
+     });
+   
+
+
+
+</script>
+</html>
